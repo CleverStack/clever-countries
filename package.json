@@ -1,0 +1,31 @@
+{
+    "name": "clever-countries",
+    "version": "0.0.1",
+    "dependencies": {
+        "lodash": "2.4.1"
+    },
+    "author": {
+        "name": "Clevertech",
+        "email": "info@clevertech.biz",
+        "web": "http://www.clevertech.biz"
+    },
+    "main": "module.js",
+    "description": "A list of countries for SQL and MongoDB within the CleverStack ecosystem.",
+    "license": "BSD-2-Clause",
+    "repository": {
+    "type": "git",
+        "url": "git://github.com/CleverStack/clever-countries.git"
+    },
+    "bugs": {
+        "url": "https://github.com/CleverStack/clever-countries/issues"
+    },
+    "keywords": [
+        "cleverstack",
+        "cleverstack-module",
+        "cleverstack-modules",
+        "cleverstack-backend"
+    ],
+    "devDependencies": {
+
+    }
+}
