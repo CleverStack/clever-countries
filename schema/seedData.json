@@ -1,5 +1,5 @@
 {
-    "countries": [
+    "CountryModel": [
         {
             "category": "countries",
             "name": "Afghanistan",
@@ -1244,10 +1244,7 @@
             "category": "countries",
             "name": "Zimbabwe",
             "code": "ZW"
-        }
-    ],
-
-    "provinces": [
+        },
         {
             "category": "provincesCanada",
             "name": "Ontario",
@@ -1297,10 +1294,7 @@
             "category": "provincesCanada",
             "name": "Newfoundland and Labrador",
             "code": "NL"
-        }
-    ],
-
-    "statesUSA": [
+        },
         {
             "category": "statesUSA",
             "name": "Alabama",

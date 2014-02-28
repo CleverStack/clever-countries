@@ -1,4 +1,4 @@
-var config = require( 'config' );
+var config = require( 'config' )[ 'clever-countries' ];
 
 module.exports = function ( CountryService ) {
     return (require( 'classes' ).Controller).extend(

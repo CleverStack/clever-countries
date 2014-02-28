@@ -1,8 +1,6 @@
-var BaseService = require( 'services' ).BaseService
-  , CountryService = null
-  , Q = require( 'q' )
+var Q = require( 'q' )
   , _ = require( 'lodash' )
-  , config = require( 'config' )[ 'clever-countries' ];
+  , CountryService = null;
 
 var categories = [ 'countries', 'statesUSA', 'provincesCanada' ]
   , errMs = { statuscode: 400, message: "Insufficient data" };
@@ -44,16 +42,17 @@ var findCategory = function ( category ) {
     return index === -1 ? categories [ 0 ] : categories [ index ];
 };
 
-module.exports = function ( sequelize, ORMCountryModel, ODMCountryModel ) {
+module.exports = function ( sequelize, ORMCountryModel ) {
+
     if ( CountryService && CountryService.instance ) {
         return CountryService.instance;
     }
 
-    CountryService = BaseService.extend( {
+    CountryService = require( 'services' ).BaseService.extend( {
 
         findById: function ( id ) {
             var deferred = Q.defer()
-              , query = config.mongo ? { _id: id } : { where: { id: id } };
+              , query = { where: { id: id } };
 
             this.find( query )
                 .then( function ( result ) {
@@ -71,7 +70,7 @@ module.exports = function ( sequelize, ORMCountryModel, ODMCountryModel ) {
         findByName: function ( name ) {
             var self = this
               , deferred = Q.defer()
-              , query = config.mongo ? { name: name } : { where: { name: name } };
+              , query = { where: { name: name } };
 
             self.find( query )
                 .then( function ( result ) {
@@ -99,7 +98,7 @@ module.exports = function ( sequelize, ORMCountryModel, ODMCountryModel ) {
                 code: code.toUpperCase()
             };
 
-            var query = config.mongo ? obj : { where: obj };
+            var query = { where: obj };
 
             this.find( query )
                 .then( function ( result ) {
@@ -132,7 +131,7 @@ module.exports = function ( sequelize, ORMCountryModel, ODMCountryModel ) {
             var obj = {
                 category: findCategory ( category || '' )
             };
-            var query = config.mongo ? obj : { where: obj };
+            var query = { where: obj };
 
             this.find( query )
                 .then( function ( result ) {
@@ -186,7 +185,7 @@ module.exports = function ( sequelize, ORMCountryModel, ODMCountryModel ) {
     } );
 
     CountryService.instance = new CountryService( sequelize );
-    CountryService.Model = !config.mongo ? ORMCountryModel : ODMCountryModel;
+    CountryService.Model = ORMCountryModel;
 
     return CountryService.instance;
 };

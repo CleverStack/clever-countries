@@ -1,12 +1,38 @@
 var expect = require ( 'chai' ).expect
-  , request = require ( 'supertest' )
-  , path = require( 'path' )
-  , app = require ( path.resolve( __dirname + '/../../../../' ) + '/index.js' );
+  , testEnv = require( 'utils' ).testEnv()
+  , seedData = require ( 'seedData' )[ 'CountryModel' ]
+  , CountryService
+  , Model;
 
 describe( 'service.CountryService', function() {
-    var CountryService = require( 'services' ).CountryService;
+
+    before( function ( done ) {
+        
+        testEnv( function ( _CountryService_, _ORMCountryModel_ ) {
+
+            CountryService = _CountryService_;
+            Model = _ORMCountryModel_;
+
+            Model
+                .findAll()
+                .success ( function ( result ) {
+                    if ( result && !result.length ){
+                        Model
+                            .bulkCreate ( seedData )
+                            .success ( function () {
+                                done();
+                            })
+                            .error ( done );
+                    } else {
+                        done();
+                    }
+                })
+                .error ( done );
+        } );
+    } );
 
     describe( '.findByName( name )', function () {
+        
         it( "should be able to find a country by it's name", function ( done ) {
             CountryService.findByName( 'Afghanistan' ).then(function ( result ) {
 
@@ -18,7 +44,7 @@ describe( 'service.CountryService', function() {
 
                 done();
             } ).fail( done );
-        } );
+        } );    
 
         it( "should be able to find a stateUSA by it's name", function ( done ) {
             CountryService.findByName( 'Arkansas' ).then(function ( result ) {

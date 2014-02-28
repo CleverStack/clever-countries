@@ -1,14 +1,41 @@
 var expect = require ( 'chai' ).expect
+  , testEnv = require( 'utils' ).testEnv()
+  , seedData = require ( 'seedData' )[ 'CountryModel' ]
   , request = require ( 'supertest' )
   , path = require( 'path' )
   , app = require ( path.resolve( __dirname + '/../../../../' ) + '/index.js' )
+  , Model
   , provinceId
   , countryId
   , stateId;
 
 describe('controllers.CountryController', function () {
+    
+    before( function ( done ) {
+        testEnv( function ( _ORMCountryModel_ ) {
+            
+            Model = _ORMCountryModel_;
+
+            Model
+                .findAll()
+                .success ( function ( result ) {
+                    if ( result && !result.length ){
+                        Model
+                            .bulkCreate ( seedData )
+                            .success ( function () {
+                                done();
+                            })
+                            .error ( done );
+                    } else {
+                        done();
+                    }
+                })
+                .error ( done );
+        });
+    } );
 
     describe('.listAction()', function() {
+        
         it('should give us a list of countries', function( done ) {
             var req = request( app ).get( '/countries' );
             req.set( 'Accept','application/json' )

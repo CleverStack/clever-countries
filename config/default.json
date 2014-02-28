@@ -1,6 +1,5 @@
 {
 	"clever-countries": {
-	    "mongo":            true,
 	    "countries":        true,
 	    "statesUSA":        true,
 	    "provincesCanada":  true
