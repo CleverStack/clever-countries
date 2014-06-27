@@ -1,24 +1,25 @@
-module.exports = function ( sequelize, DataTypes ) {
-    return sequelize.define( "Country",
+module.exports = function ( config, Model ) {
+    return Model.extend( 'Country', {
+        type: config[ 'clever-countries' ].driver
+    },
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: Number,
             primaryKey: true,
             autoIncrement: true
         },
         category: {
-            type: DataTypes.STRING,
+            type: String,
             allowNull: false
         },
         name: {
-            type: DataTypes.STRING,
+            type: String,
             allowNull: false,
             unique: true
         },
         code: {
-            type: DataTypes.STRING,
+            type: String,
             allowNull: false
         }
-    },
-    {});
-};
+    });
+}

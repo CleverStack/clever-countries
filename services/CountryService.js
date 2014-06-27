@@ -1,8 +1,7 @@
-var Q = require( 'q' )
-  , _ = require( 'lodash' )
-  , CountryService = null;
-
-var categories = [ 'countries', 'statesUSA', 'provincesCanada' ]
+var Promise = require( 'bluebird' )
+  , Q       = require( 'q' )
+  , _       = require( 'lodash' )
+  , categories = [ 'countries', 'statesUSA', 'provincesCanada' ]
   , errMs = { statuscode: 400, message: "Insufficient data" };
 
 var normalize = function ( data ) {
@@ -34,21 +33,17 @@ var normalize = function ( data ) {
 var findCategory = function ( category ) {
     var index = -1;
     if ( !!category && _.isString( category ) ) {
-        var index = _.findIndex( categories, function ( val ) {
+        index = _.findIndex( categories, function ( val ) {
             return val.toLowerCase() === category.toLowerCase();
-        } );
+        });
     }
 
     return index === -1 ? categories [ 0 ] : categories [ index ];
 };
 
-module.exports = function ( sequelize, ORMCountryModel ) {
-
-    if ( CountryService && CountryService.instance ) {
-        return CountryService.instance;
-    }
-
-    CountryService = require( 'services' ).BaseService.extend( {
+module.exports = function( Service, CountryModel ) {
+    return Service.extend({
+        model: CountryModel,
 
         findById: function ( id ) {
             var deferred = Q.defer()
@@ -181,11 +176,5 @@ module.exports = function ( sequelize, ORMCountryModel ) {
 
             return deferred.promise;
         }
-
-    } );
-
-    CountryService.instance = new CountryService( sequelize );
-    CountryService.Model = ORMCountryModel;
-
-    return CountryService.instance;
-};
+    });
+}
